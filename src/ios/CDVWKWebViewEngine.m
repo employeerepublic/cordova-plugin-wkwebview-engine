@@ -97,7 +97,7 @@
     NSString* title = wkWebView.title;
     NSLog(@"CDVWKWebViewEngine reloadIfRequired WKWebView.title: %@", title);
 
-    BOOL reload = (title == nil);
+    BOOL reload = ((title == nil) || [title isEqualToString:@""]);
     NSLog(@"CDVWKWebViewEngine reloadIfRequired reload: %u", reload);
     if (reload) {
         [wkWebView reload];
