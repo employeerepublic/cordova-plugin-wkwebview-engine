@@ -88,6 +88,17 @@
     }
 
     [self updateSettings:self.commandDelegate.settings];
+
+    // check if content thread has died on resume
+    NSLog(@"%@", @"CDVWKWebViewEngine will reload WKWebView if required on resume");
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(onAppWillEnterForeground:)
+               name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void) onAppWillEnterForeground:(NSNotification*)notification {
+    [self reloadIfRequired];
 }
 
 - (BOOL)reloadIfRequired
@@ -100,6 +111,7 @@
     BOOL reload = ((title == nil) || [title isEqualToString:@""]);
     NSLog(@"CDVWKWebViewEngine reloadIfRequired reload: %u", reload);
     if (reload) {
+        NSLog(@"%@", @"CDVWKWebViewEngine reloading!");
         [wkWebView reload];
     }
     return reload;
